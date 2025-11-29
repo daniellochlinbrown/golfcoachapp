@@ -2,12 +2,17 @@
 service: golfcoachapp
 
 # Name of the container image (use your-user/app-name on external registries).
+# TODO: Update this to match your registry username/image name
+# Examples:
+#   - Docker Hub: yourusername/golfcoachapp
+#   - GitHub: ghcr.io/yourusername/golfcoachapp
 image: golfcoachapp
 
 # Deploy to these servers.
+# TODO: Replace 192.168.0.1 with your actual production server IP address
 servers:
   web:
-    - 192.168.0.1
+    - 192.168.0.1  # CHANGE THIS to your server IP
   # job:
   #   hosts:
   #     - 192.168.0.1
@@ -25,21 +30,34 @@ servers:
 #   host: app.example.com
 
 # Where you keep your container images.
+# TODO: Choose and configure your container registry
 registry:
-  # Alternatives: hub.docker.com / registry.digitalocean.com / ghcr.io / ...
+  # Option 1: Docker Hub (most common)
+  #   server: hub.docker.com
+  #   username: yourdockerhubusername
+  #   password:
+  #     - KAMAL_REGISTRY_PASSWORD
+
+  # Option 2: GitHub Container Registry (free for public repos)
+  #   server: ghcr.io
+  #   username: yourgithubusername
+  #   password:
+  #     - KAMAL_REGISTRY_PASSWORD  # Use GitHub Personal Access Token
+
+  # Option 3: DigitalOcean Container Registry
+  #   server: registry.digitalocean.com/your-registry-name
+  #   username: your-do-token
+  #   password:
+  #     - KAMAL_REGISTRY_PASSWORD
+
+  # TEMPORARY: localhost registry (REMOVE BEFORE DEPLOYING)
   server: localhost:5555
-
-  # Needed for authenticated registries.
-  # username: your-user
-
-  # Always use an access token rather than real password when possible.
-  # password:
-  #   - KAMAL_REGISTRY_PASSWORD
 
 # Inject ENV variables into containers (secrets come from .kamal/secrets).
 env:
   secret:
     - RAILS_MASTER_KEY
+    - CLAUDE_API_KEY  # Required for AI training plan generation
   clear:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.
     # When you start using multiple servers, you should split out job processing to a dedicated machine.
@@ -51,8 +69,13 @@ env:
     # Set number of cores available to the application on each server (default: 1).
     # WEB_CONCURRENCY: 2
 
-    # Match this to any external database server to configure Active Record correctly
-    # Use golfcoachapp-db for a db accessory server on same machine via local kamal docker network.
+    # TODO: Configure your PostgreSQL database connection
+    # Option 1: External managed database (recommended for production)
+    #   DB_HOST: your-postgres-server.com
+    #   DATABASE_URL: postgresql://user:password@host:5432/golfcoachapp_production
+    # Option 2: Use Kamal database accessory (see accessories section below)
+    #   DB_HOST: golfcoachapp-db
+    # IMPORTANT: Your app uses 4 databases (primary, cache, queue, cable)
     # DB_HOST: 192.168.0.2
 
     # Log everything from Rails
@@ -96,22 +119,31 @@ builder:
 #   user: app
 
 # Use accessory services (secrets come from .kamal/secrets).
+# TODO: Uncomment and configure if you want to run PostgreSQL on the same server
+# IMPORTANT: Your app needs 4 PostgreSQL databases:
+#   - golfcoachapp_production (primary data)
+#   - golfcoachapp_production_cache (Solid Cache)
+#   - golfcoachapp_production_queue (Solid Queue)
+#   - golfcoachapp_production_cable (Action Cable)
+#
+# Option 1: Use external managed database service (RECOMMENDED)
+#   - Set DB_HOST and DATABASE_URL in env.clear above
+#   - Or use GOLFCOACHAPP_DATABASE_PASSWORD in config/database.yml
+#
+# Option 2: Use Kamal accessory (example below - needs customization)
 # accessories:
 #   db:
-#     image: mysql:8.0
-#     host: 192.168.0.2
-#     # Change to 3306 to expose port to the world instead of just local network.
-#     port: "127.0.0.1:3306:3306"
+#     image: postgres:16
+#     host: 192.168.0.1  # Same as your web server
+#     port: "127.0.0.1:5432:5432"
 #     env:
 #       clear:
-#         MYSQL_ROOT_HOST: '%'
+#         POSTGRES_USER: golfcoachapp
+#         POSTGRES_DB: golfcoachapp_production
 #       secret:
-#         - MYSQL_ROOT_PASSWORD
-#     files:
-#       - config/mysql/production.cnf:/etc/mysql/my.cnf
-#       - db/production.sql:/docker-entrypoint-initdb.d/setup.sql
+#         - POSTGRES_PASSWORD
 #     directories:
-#       - data:/var/lib/mysql
+#       - data:/var/lib/postgresql/data
 #   redis:
 #     image: valkey/valkey:8
 #     host: 192.168.0.2

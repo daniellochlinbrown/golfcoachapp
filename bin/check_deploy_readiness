@@ -1,0 +1,174 @@
+#!/usr/bin/env ruby
+
+# Check if the app is ready for Render deployment
+
+require "fileutils"
+
+puts "🔍 Checking Golf Coach App deployment readiness for Render...\n\n"
+
+errors = []
+warnings = []
+success = []
+
+# Check 1: render.yaml exists
+if File.exist?("render.yaml")
+  success << "✅ render.yaml configuration found"
+else
+  errors << "❌ render.yaml not found - required for Render deployment"
+end
+
+# Check 2: .gitignore has sensitive files
+if File.exist?(".gitignore")
+  gitignore = File.read(".gitignore")
+  if gitignore.include?(".env") && gitignore.include?("master.key")
+    success << "✅ .gitignore properly configured"
+  else
+    warnings << "⚠️  .gitignore may be missing .env or master.key"
+  end
+else
+  errors << "❌ .gitignore not found"
+end
+
+# Check 3: Rails master key exists
+if File.exist?("config/master.key")
+  success << "✅ Rails master key found (config/master.key)"
+else
+  errors << "❌ Rails master key missing - run: EDITOR=nano bin/rails credentials:edit"
+end
+
+# Check 4: Check if Claude API key is in .env (for local testing)
+if File.exist?(".env")
+  env_contents = File.read(".env")
+  if env_contents.match?(/CLAUDE_API_KEY=sk-ant-/)
+    success << "✅ CLAUDE_API_KEY found in .env (remember to add to Render!)"
+  elsif env_contents.include?("CLAUDE_API_KEY")
+    warnings << "⚠️  CLAUDE_API_KEY in .env but value looks incorrect"
+  else
+    warnings << "⚠️  CLAUDE_API_KEY not in .env - you'll need to add it to Render dashboard"
+  end
+else
+  warnings << "⚠️  .env file not found - create from .env.example"
+end
+
+# Check 5: Dockerfile exists
+if File.exist?("Dockerfile")
+  success << "✅ Dockerfile found"
+else
+  errors << "❌ Dockerfile not found - required for Render deployment"
+end
+
+# Check 6: Production environment configured
+if File.exist?("config/environments/production.rb")
+  prod_config = File.read("config/environments/production.rb")
+  if prod_config.include?("config.force_ssl = true")
+    success << "✅ Production environment configured for SSL"
+  else
+    warnings << "⚠️  SSL not enabled in production.rb"
+  end
+else
+  errors << "❌ config/environments/production.rb not found"
+end
+
+# Check 7: Database configuration
+if File.exist?("config/database.yml")
+  db_config = File.read("config/database.yml")
+  if db_config.include?("golfcoachapp_production_cache")
+    success << "✅ Database configuration includes all 4 required databases"
+  else
+    warnings << "⚠️  Ensure all 4 databases are configured in database.yml"
+  end
+else
+  errors << "❌ config/database.yml not found"
+end
+
+# Check 8: Git repository
+if Dir.exist?(".git")
+  success << "✅ Git repository initialized"
+
+  # Check for uncommitted changes
+  if system("git diff-index --quiet HEAD --", out: File::NULL, err: File::NULL)
+    success << "✅ No uncommitted changes"
+  else
+    warnings << "⚠️  You have uncommitted changes - commit before deploying"
+  end
+else
+  errors << "❌ Not a git repository - initialize with: git init"
+end
+
+# Check 9: Required gems
+if File.exist?("Gemfile")
+  gemfile = File.read("Gemfile")
+  required_gems = ["pg", "httparty", "bcrypt", "kamal"]
+  missing_gems = []
+
+  required_gems.each do |gem|
+    unless gemfile.include?("gem \"#{gem}\"") || gemfile.include?("gem '#{gem}'")
+      missing_gems << gem
+    end
+  end
+
+  if missing_gems.empty?
+    success << "✅ All required gems present in Gemfile"
+  else
+    errors << "❌ Missing gems: #{missing_gems.join(', ')}"
+  end
+else
+  errors << "❌ Gemfile not found"
+end
+
+# Check 10: Procfile exists (optional but helpful)
+if File.exist?("Procfile") || File.exist?("Procfile.dev")
+  success << "✅ Procfile found"
+else
+  warnings << "⚠️  Procfile not found (optional, Render uses Dockerfile CMD)"
+end
+
+# Print results
+puts "=" * 60
+puts "DEPLOYMENT READINESS RESULTS"
+puts "=" * 60
+puts
+
+if success.any?
+  puts "SUCCESS CHECKS:"
+  success.each { |msg| puts "  #{msg}" }
+  puts
+end
+
+if warnings.any?
+  puts "WARNINGS:"
+  warnings.each { |msg| puts "  #{msg}" }
+  puts
+end
+
+if errors.any?
+  puts "ERRORS (must fix before deploying):"
+  errors.each { |msg| puts "  #{msg}" }
+  puts
+end
+
+puts "=" * 60
+
+# Summary
+if errors.empty?
+  if warnings.empty?
+    puts "✅ ALL CHECKS PASSED! Your app is ready to deploy to Render."
+    puts
+    puts "Next steps:"
+    puts "  1. Push your code to GitHub"
+    puts "  2. Follow RENDER_DEPLOYMENT.md to deploy"
+    puts "  3. Set RAILS_MASTER_KEY and CLAUDE_API_KEY in Render dashboard"
+  else
+    puts "⚠️  MOSTLY READY - Review warnings above before deploying."
+    puts
+    puts "You can deploy, but address warnings for best results."
+  end
+else
+  puts "❌ NOT READY - Fix errors above before deploying."
+  puts
+  puts "See RENDER_DEPLOYMENT.md for detailed instructions."
+end
+
+puts "=" * 60
+
+exit(errors.empty? ? 0 : 1)

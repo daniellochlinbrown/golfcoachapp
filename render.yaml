@@ -1,0 +1,88 @@
+# Render Blueprint for Golf Coach App
+# Documentation: https://render.com/docs/blueprint-spec
+
+services:
+  # Web Service - Rails Application
+  - type: web
+    name: golfcoachapp
+    runtime: docker
+    plan: starter  # Change to 'standard' or 'pro' for production
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+
+    # Health check endpoint
+    healthCheckPath: /up
+
+    # Environment variables
+    envVars:
+      # Rails environment
+      - key: RAILS_ENV
+        value: production
+
+      # Rails master key (REQUIRED - add in Render dashboard)
+      - key: RAILS_MASTER_KEY
+        sync: false  # Must be set manually in Render dashboard
+
+      # Claude API key (REQUIRED - add in Render dashboard)
+      - key: CLAUDE_API_KEY
+        sync: false  # Must be set manually in Render dashboard
+
+      # Database connection (automatically set by Render when you link the database)
+      - key: DATABASE_URL
+        fromDatabase:
+          name: golfcoachapp-db
+          property: connectionString
+
+      # Solid Queue runs in Puma process
+      - key: SOLID_QUEUE_IN_PUMA
+        value: true
+
+      # Rails log level
+      - key: RAILS_LOG_LEVEL
+        value: info
+
+      # Number of web workers (adjust based on plan)
+      - key: WEB_CONCURRENCY
+        value: 2
+
+      # Rails serve static files (Render handles this, but good to enable)
+      - key: RAILS_SERVE_STATIC_FILES
+        value: true
+
+      # Rails log to stdout (required for Render)
+      - key: RAILS_LOG_TO_STDOUT
+        value: true
+
+  # PostgreSQL Database
+  - type: pscale
+    name: golfcoachapp-db
+    plan: starter  # Free tier available
+    databaseName: golfcoachapp_production
+    # Render will automatically create these additional databases:
+    # - golfcoachapp_production_cache (for Solid Cache)
+    # - golfcoachapp_production_queue (for Solid Queue)
+    # - golfcoachapp_production_cable (for Action Cable)
+    # NOTE: You may need to create these manually via Render dashboard or psql
+
+# Optional: Background Worker (if you want separate job processing)
+# Uncomment this section if you need dedicated background workers
+# - type: worker
+#   name: golfcoachapp-worker
+#   runtime: docker
+#   dockerfilePath: ./Dockerfile
+#   dockerContext: .
+#   plan: starter
+#   envVars:
+#     - key: RAILS_ENV
+#       value: production
+#     - key: RAILS_MASTER_KEY
+#       fromService:
+#         type: web
+#         name: golfcoachapp
+#         envVarKey: RAILS_MASTER_KEY
+#     - key: DATABASE_URL
+#       fromDatabase:
+#         name: golfcoachapp-db
+#         property: connectionString
+#   # Override CMD to run Solid Queue
+#   startCommand: "bundle exec rake solid_queue:start"
