@@ -1,0 +1,105 @@
+<div class="min-h-screen bg-gradient-to-b from-green-50 to-white">
+  <!-- Hero Section -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
+    <div class="text-center">
+      <h1 class="text-5xl font-extrabold text-gray-900 sm:text-6xl md:text-7xl">
+        <span class="block">Improve Your</span>
+        <span class="block text-green-600">Golf Game</span>
+      </h1>
+      <p class="mt-6 max-w-2xl mx-auto text-xl text-gray-500">
+        Get personalized, research-backed training plans powered by AI.
+        Whether you're a beginner or scratch golfer, we'll help you reach your goals.
+      </p>
+    </div>
+
+    <!-- Call to Action Section -->
+    <div class="mt-16 max-w-4xl mx-auto">
+      <h2 class="text-3xl font-bold text-center text-gray-900 mb-8">
+        How would you like to get started?
+      </h2>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <!-- Use Case 1: Official Handicap -->
+        <div class="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition-shadow">
+          <div class="text-center">
+            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900 mb-3">
+              I have an official handicap
+            </h3>
+            <p class="text-gray-600 mb-6">
+              Already know your handicap? Enter it along with your target and timeline to get your personalized training plan.
+            </p>
+            <%= link_to "Continue with Handicap", new_training_plan_path, class: "inline-block w-full bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 font-semibold transition-colors" %>
+          </div>
+        </div>
+
+        <!-- Use Case 2: Upload Scores -->
+        <div class="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition-shadow">
+          <div class="text-center">
+            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+              </svg>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900 mb-3">
+              I don't have a handicap yet
+            </h3>
+            <p class="text-gray-600 mb-6">
+              Upload your last 3 rounds (54 holes) and we'll calculate your handicap using the World Handicap System.
+            </p>
+            <%= link_to "Upload My Scores", new_golf_round_path, class: "inline-block w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 font-semibold transition-colors" %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="mt-20">
+      <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">
+        What You'll Get
+      </h2>
+      <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div class="text-center">
+          <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Research-Backed Plans</h3>
+          <p class="text-gray-600">Training recommendations based on professional golf research and proven methods</p>
+        </div>
+
+        <div class="text-center">
+          <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Three Complexity Levels</h3>
+          <p class="text-gray-600">Simple, medium, and complex guides to match your learning style</p>
+        </div>
+
+        <div class="text-center">
+          <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Realistic Goals</h3>
+          <p class="text-gray-600">Honest timelines and expectations based on your current level and commitment</p>
+        </div>
+      </div>
+    </div>
+
+    <% unless logged_in? %>
+      <div class="mt-16 text-center">
+        <p class="text-gray-600 mb-4">Ready to transform your golf game?</p>
+        <%= link_to "Create Free Account", signup_path, class: "inline-block bg-green-600 text-white py-3 px-8 rounded-lg hover:bg-green-700 font-semibold text-lg transition-colors" %>
+      </div>
+    <% end %>
+  </div>
+</div>

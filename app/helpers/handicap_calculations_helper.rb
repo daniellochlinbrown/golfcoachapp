@@ -1,0 +1,2 @@
+module HandicapCalculationsHelper
+end

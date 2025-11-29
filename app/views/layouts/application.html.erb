@@ -23,7 +23,47 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body class="bg-gray-50">
+    <nav class="bg-white shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex">
+            <div class="flex-shrink-0 flex items-center">
+              <%= link_to "Golf Coach", root_path, class: "text-2xl font-bold text-green-600" %>
+            </div>
+          </div>
+          <div class="flex items-center space-x-4">
+            <% if logged_in? %>
+              <%= link_to "Dashboard", user_path(current_user), class: "text-gray-700 hover:text-green-600" %>
+              <%= link_to "Training Plans", training_plans_path, class: "text-gray-700 hover:text-green-600" %>
+              <%= button_to "Logout", logout_path, method: :delete, class: "text-gray-700 hover:text-green-600" %>
+            <% else %>
+              <%= link_to "Login", login_path, class: "text-gray-700 hover:text-green-600" %>
+              <%= link_to "Sign Up", signup_path, class: "bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <% if flash[:notice] %>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+        <div class="bg-green-50 border border-green-400 text-green-800 px-4 py-3 rounded">
+          <%= flash[:notice] %>
+        </div>
+      </div>
+    <% end %>
+
+    <% if flash[:alert] %>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+        <div class="bg-red-50 border border-red-400 text-red-800 px-4 py-3 rounded">
+          <%= flash[:alert] %>
+        </div>
+      </div>
+    <% end %>
+
+    <main>
+      <%= yield %>
+    </main>
   </body>
 </html>

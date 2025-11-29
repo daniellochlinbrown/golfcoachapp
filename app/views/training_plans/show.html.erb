@@ -1,0 +1,94 @@
+<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-5xl mx-auto">
+    <!-- Header -->
+    <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+      <div class="text-center">
+        <h1 class="text-4xl font-extrabold text-gray-900 mb-4">
+          Your Personalized Training Plan
+        </h1>
+        <div class="flex justify-center items-center space-x-8 text-lg">
+          <div>
+            <span class="text-gray-600">Current:</span>
+            <span class="font-bold text-gray-900"><%= @training_plan.current_handicap %></span>
+          </div>
+          <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+          </svg>
+          <div>
+            <span class="text-gray-600">Target:</span>
+            <span class="font-bold text-green-600"><%= @training_plan.target_handicap %></span>
+          </div>
+          <div class="text-gray-600">
+            in <span class="font-bold text-gray-900"><%= @training_plan.timeline_months %> months</span>
+          </div>
+        </div>
+        <p class="mt-4 text-gray-600">
+          Goal: Improve by <%= (@training_plan.current_handicap - @training_plan.target_handicap).round(1) %> strokes
+        </p>
+      </div>
+    </div>
+
+    <!-- Training Guide Selection -->
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden" x-data="{ activeTab: 'simple' }">
+      <!-- Tabs -->
+      <div class="border-b border-gray-200">
+        <nav class="flex -mb-px">
+          <button @click="activeTab = 'simple'"
+                  :class="activeTab === 'simple' ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+                  class="w-1/3 py-4 px-1 text-center border-b-2 font-medium text-sm">
+            Simple Guide
+          </button>
+          <button @click="activeTab = 'medium'"
+                  :class="activeTab === 'medium' ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+                  class="w-1/3 py-4 px-1 text-center border-b-2 font-medium text-sm">
+            Medium Guide
+          </button>
+          <button @click="activeTab = 'complex'"
+                  :class="activeTab === 'complex' ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+                  class="w-1/3 py-4 px-1 text-center border-b-2 font-medium text-sm">
+            Complex Guide
+          </button>
+        </nav>
+      </div>
+
+      <!-- Tab Content -->
+      <div class="p-8">
+        <!-- Simple Guide -->
+        <div x-show="activeTab === 'simple'" class="prose max-w-none">
+          <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+            <h3 class="text-blue-900 font-semibold mb-1">Simple Guide</h3>
+            <p class="text-sm text-blue-800">High-level overview with basic, easy-to-follow recommendations</p>
+          </div>
+          <div class="whitespace-pre-wrap text-gray-700"><%= @training_plan.simple_guide %></div>
+        </div>
+
+        <!-- Medium Guide -->
+        <div x-show="activeTab === 'medium'" class="prose max-w-none" style="display: none;">
+          <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+            <h3 class="text-yellow-900 font-semibold mb-1">Medium Guide</h3>
+            <p class="text-sm text-yellow-800">Moderate depth with specific techniques and practice schedules</p>
+          </div>
+          <div class="whitespace-pre-wrap text-gray-700"><%= @training_plan.medium_guide %></div>
+        </div>
+
+        <!-- Complex Guide -->
+        <div x-show="activeTab === 'complex'" class="prose max-w-none" style="display: none;">
+          <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-6">
+            <h3 class="text-purple-900 font-semibold mb-1">Complex Guide</h3>
+            <p class="text-sm text-purple-800">Comprehensive, detailed training program with advanced strategies</p>
+          </div>
+          <div class="whitespace-pre-wrap text-gray-700"><%= @training_plan.complex_guide %></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="mt-8 flex justify-center space-x-4">
+      <%= link_to "Create Another Plan", new_training_plan_path, class: "bg-white border border-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-50 font-medium" %>
+      <%= link_to "Back to Home", root_path, class: "bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 font-medium" %>
+    </div>
+  </div>
+</div>
+
+<!-- Alpine.js for tabs (included via CDN) -->
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
