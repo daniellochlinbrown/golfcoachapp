@@ -1,4 +1,6 @@
 class TrainingPlansController < ApplicationController
+  before_action :require_login, only: [ :new, :create ]
+
   # GET /training_plans/new
   def new
     @training_plan = TrainingPlan.new

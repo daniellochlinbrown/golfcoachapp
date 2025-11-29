@@ -1,4 +1,6 @@
 class GolfRoundsController < ApplicationController
+  before_action :require_login, only: [ :new, :create ]
+
   # GET /golf_rounds/new
   def new
     # Store rounds in session for guest users
