@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  handicap_calculation: one
+  current_handicap: 9.99
+  target_handicap: 9.99
+  timeline_months: 1
+  simple_guide: MyText
+  medium_guide: MyText
+  complex_guide: MyText
+
+two:
+  user: two
+  handicap_calculation: two
+  current_handicap: 9.99
+  target_handicap: 9.99
+  timeline_months: 1
+  simple_guide: MyText
+  medium_guide: MyText
+  complex_guide: MyText

@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  calculated_handicap: 9.99
+  calculation_method: MyString
+  ai_context: MyText
+
+two:
+  user: two
+  calculated_handicap: 9.99
+  calculation_method: MyString
+  ai_context: MyText

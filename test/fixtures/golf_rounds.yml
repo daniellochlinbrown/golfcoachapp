@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  course_name: MyString
+  score: 1
+  course_rating: 9.99
+  slope_rating: 1
+  played_at: 2025-11-29
+
+two:
+  user: two
+  course_name: MyString
+  score: 1
+  course_rating: 9.99
+  slope_rating: 1
+  played_at: 2025-11-29
