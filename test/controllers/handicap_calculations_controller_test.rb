@@ -1,18 +1,18 @@
 require "test_helper"
 
 class HandicapCalculationsControllerTest < ActionDispatch::IntegrationTest
-  test "should get new" do
-    get handicap_calculations_new_url
-    assert_response :success
+  setup do
+    @user = users(:one)
+    log_in_as(@user)
   end
 
-  test "should get create" do
-    get handicap_calculations_create_url
-    assert_response :success
+  test "should redirect to golf rounds when no rounds in session" do
+    get new_handicap_calculation_path
+    assert_redirected_to new_golf_round_path
   end
 
-  test "should get show" do
-    get handicap_calculations_show_url
-    assert_response :success
+  test "should redirect on create" do
+    post handicap_calculations_path
+    assert_redirected_to new_handicap_calculation_path
   end
 end
