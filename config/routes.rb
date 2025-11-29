@@ -20,16 +20,16 @@ Rails.application.routes.draw do
   delete "/logout",  to: "sessions#destroy"
 
   # User resources
-  resources :users, only: [:show]
+  resources :users, only: [ :show ]
 
   # Golf rounds - for score upload
-  resources :golf_rounds, only: [:new, :create, :index]
+  resources :golf_rounds, only: [ :new, :create, :index ]
 
   # Handicap calculations
-  resources :handicap_calculations, only: [:new, :create, :show]
+  resources :handicap_calculations, only: [ :new, :create, :show ]
 
   # Training plans
-  resources :training_plans, only: [:new, :create, :show, :index]
+  resources :training_plans, only: [ :new, :create, :show, :index ]
 
   # Health check
   get "up" => "rails/health#show", as: :rails_health_check

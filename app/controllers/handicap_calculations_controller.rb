@@ -20,7 +20,7 @@ class HandicapCalculationsController < ApplicationController
     @handicap_calculation = HandicapCalculation.new(
       user: current_user,
       calculated_handicap: @calculated_handicap,
-      calculation_method: 'predicted'
+      calculation_method: "predicted"
     )
 
     # Associate rounds with calculation
