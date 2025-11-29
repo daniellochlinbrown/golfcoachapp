@@ -6,7 +6,7 @@ services:
   - type: web
     name: golfcoachapp
     runtime: docker
-    plan: starter  # Change to 'standard' or 'pro' for production
+    plan: free  # Free tier - app spins down after 15 min of inactivity
     dockerfilePath: ./Dockerfile
     dockerContext: .
 
@@ -42,8 +42,9 @@ services:
         value: info
 
       # Number of web workers (adjust based on plan)
+      # Free tier has limited resources, so use 1 worker
       - key: WEB_CONCURRENCY
-        value: 2
+        value: 1
 
       # Rails serve static files (Render handles this, but good to enable)
       - key: RAILS_SERVE_STATIC_FILES
@@ -54,14 +55,17 @@ services:
         value: true
 
 databases:
-  # PostgreSQL Database
+  # PostgreSQL Database - Free Tier
   - name: golfcoachapp-db
     databaseName: golfcoachapp_production
-    plan: starter  # Free tier available, or use 'free' for completely free
-    # NOTE: You will need to create 3 additional databases manually:
-    # - golfcoachapp_production_cache (for Solid Cache)
-    # - golfcoachapp_production_queue (for Solid Queue)
-    # - golfcoachapp_production_cable (for Action Cable)
+    plan: free  # Free tier: 1GB storage, expires after 90 days
+    # NOTE: Free tier limitations:
+    #   - 1 GB storage
+    #   - Database expires after 90 days (can be renewed)
+    #   - You will need to create 3 additional databases manually:
+    #     * golfcoachapp_production_cache (for Solid Cache)
+    #     * golfcoachapp_production_queue (for Solid Queue)
+    #     * golfcoachapp_production_cable (for Action Cable)
     # Instructions in RENDER_DEPLOYMENT.md
 
 # Optional: Background Worker (if you want separate job processing)
