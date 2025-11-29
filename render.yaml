@@ -53,16 +53,16 @@ services:
       - key: RAILS_LOG_TO_STDOUT
         value: true
 
+databases:
   # PostgreSQL Database
-  - type: pscale
-    name: golfcoachapp-db
-    plan: starter  # Free tier available
+  - name: golfcoachapp-db
     databaseName: golfcoachapp_production
-    # Render will automatically create these additional databases:
+    plan: starter  # Free tier available, or use 'free' for completely free
+    # NOTE: You will need to create 3 additional databases manually:
     # - golfcoachapp_production_cache (for Solid Cache)
     # - golfcoachapp_production_queue (for Solid Queue)
     # - golfcoachapp_production_cable (for Action Cable)
-    # NOTE: You may need to create these manually via Render dashboard or psql
+    # Instructions in RENDER_DEPLOYMENT.md
 
 # Optional: Background Worker (if you want separate job processing)
 # Uncomment this section if you need dedicated background workers
