@@ -2,11 +2,11 @@
   <!-- Hero Section -->
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
     <div class="text-center">
-      <h1 class="text-5xl font-extrabold text-gray-900 sm:text-6xl md:text-7xl">
+      <h1 class="text-4xl font-extrabold text-gray-900 sm:text-5xl">
         <span class="block">Improve Your</span>
         <span class="block text-green-600">Golf Game</span>
       </h1>
-      <p class="mt-6 max-w-2xl mx-auto text-xl text-gray-500">
+      <p class="mt-6 max-w-2xl mx-auto text-lg text-gray-500">
         Get personalized, research-backed training plans powered by AI.
         Whether you're a beginner or scratch golfer, we'll help you reach your goals.
       </p>
@@ -14,7 +14,7 @@
 
     <!-- Call to Action Section -->
     <div class="mt-16 max-w-4xl mx-auto">
-      <h2 class="text-3xl font-bold text-center text-gray-900 mb-8">
+      <h2 class="text-2xl font-bold text-center text-gray-900 mb-8">
         How would you like to get started?
       </h2>
 
@@ -22,12 +22,12 @@
         <!-- Use Case 1: Official Handicap -->
         <div class="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition-shadow">
           <div class="text-center">
-            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
               </svg>
             </div>
-            <h3 class="text-2xl font-bold text-gray-900 mb-3">
+            <h3 class="text-xl font-bold text-gray-900 mb-3">
               I have an official handicap
             </h3>
             <p class="text-gray-600 mb-6">
@@ -40,12 +40,12 @@
         <!-- Use Case 2: Upload Scores -->
         <div class="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition-shadow">
           <div class="text-center">
-            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
               </svg>
             </div>
-            <h3 class="text-2xl font-bold text-gray-900 mb-3">
+            <h3 class="text-xl font-bold text-gray-900 mb-3">
               I don't have a handicap yet
             </h3>
             <p class="text-gray-600 mb-6">
@@ -59,7 +59,7 @@
 
     <!-- Features Section -->
     <div class="mt-20">
-      <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">
+      <h2 class="text-2xl font-bold text-center text-gray-900 mb-12">
         What You'll Get
       </h2>
       <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
@@ -98,7 +98,7 @@
     <% unless logged_in? %>
       <div class="mt-16 text-center">
         <p class="text-gray-600 mb-4">Ready to transform your golf game?</p>
-        <%= link_to "Create Free Account", signup_path, class: "inline-block bg-green-600 text-white py-3 px-8 rounded-lg hover:bg-green-700 font-semibold text-lg transition-colors" %>
+        <%= link_to "Create Free Account", signup_path, class: "inline-block bg-green-600 text-white py-2 px-6 rounded-lg hover:bg-green-700 font-semibold transition-colors" %>
       </div>
     <% end %>
   </div>

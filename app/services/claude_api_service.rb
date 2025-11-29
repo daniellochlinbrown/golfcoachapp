@@ -5,7 +5,7 @@ class ClaudeApiService
 
   def initialize
     @api_key = ENV["CLAUDE_API_KEY"]
-    @model = "claude-3-5-sonnet-20241022"
+    @model = "claude-sonnet-4-20250514"
   end
 
   # Generate training plan from handicap information
@@ -51,14 +51,25 @@ class ClaudeApiService
       system: system_message
     }
 
-    response = self.class.post("/v1/messages", headers: headers, body: body.to_json)
+    response = self.class.post(
+      "/v1/messages",
+      headers: headers,
+      body: body.to_json,
+      timeout: 120  # 120 second timeout
+    )
 
     if response.success?
       JSON.parse(response.body)
     else
       Rails.logger.error("Claude API Error: #{response.code} - #{response.body}")
-      raise "API call failed: #{response.message}"
+      raise "API call failed: #{response.code} - #{response.body}"
     end
+  rescue Net::ReadTimeout => e
+    Rails.logger.error("Claude API Timeout: #{e.message}")
+    raise "Request timed out. Please try again."
+  rescue => e
+    Rails.logger.error("Claude API Error: #{e.class} - #{e.message}")
+    raise "API error: #{e.message}"
   end
 
   def system_message
@@ -87,23 +98,25 @@ class ClaudeApiService
 
       Generate THREE training guides. Format your response EXACTLY as follows, with clear section markers:
 
-      === SIMPLE GUIDE ===
-      [Your simple guide content here - 300-400 words]
+      === QUICK START GUIDE ===
+      [Your quick start guide content here - 300-400 words]
       - High-level overview
       - Weekly time commitment
       - Top 3-5 focus areas
-      - Basic drills and exercises
+      - Essential drills and exercises
+      - Quick wins
 
-      === MEDIUM GUIDE ===
-      [Your medium guide content here - 600-800 words]
+      === COMPLETE PLAN ===
+      [Your complete plan content here - 600-800 words]
       - Weekly/monthly breakdown
-      - Specific practice drills
+      - Specific practice drills and techniques
       - Skill development priorities
       - Progress milestones
       - Equipment recommendations
+      - Practice routines
 
-      === COMPLEX GUIDE ===
-      [Your complex guide content here - 1000-1500 words]
+      === ADVANCED PLAN ===
+      [Your advanced plan content here - 1000-1500 words]
       - Detailed daily/weekly schedule
       - Advanced technique work
       - Physical conditioning program
@@ -112,6 +125,7 @@ class ClaudeApiService
       - Practice vs. play ratio
       - Progress tracking methods
       - Common pitfalls to avoid
+      - Performance optimization
 
       Base all recommendations on professional golf research and proven coaching methods.
       Include realistic expectations about improvement rates.
@@ -146,9 +160,9 @@ class ClaudeApiService
     return { simple: "", medium: "", complex: "" } unless content
 
     # Extract each guide based on section markers
-    simple_guide = extract_section(content, "SIMPLE GUIDE", "MEDIUM GUIDE")
-    medium_guide = extract_section(content, "MEDIUM GUIDE", "COMPLEX GUIDE")
-    complex_guide = extract_section(content, "COMPLEX GUIDE", nil)
+    simple_guide = extract_section(content, "QUICK START GUIDE", "COMPLETE PLAN")
+    medium_guide = extract_section(content, "COMPLETE PLAN", "ADVANCED PLAN")
+    complex_guide = extract_section(content, "ADVANCED PLAN", nil)
 
     {
       simple: simple_guide.strip,

@@ -1,0 +1,119 @@
+<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900 mb-2">My Dashboard</h1>
+          <p class="text-gray-600"><%= @user.email %></p>
+        </div>
+        <div class="flex gap-4">
+          <%= link_to "New Training Plan", new_training_plan_path, class: "bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 font-medium" %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white rounded-lg shadow p-6">
+        <div class="flex items-center">
+          <div class="bg-green-100 rounded-full p-3 mr-4">
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm text-gray-600">Training Plans</p>
+            <p class="text-2xl font-bold text-gray-900"><%= @training_plans.count %></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow p-6">
+        <div class="flex items-center">
+          <div class="bg-blue-100 rounded-full p-3 mr-4">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm text-gray-600">Latest Plan</p>
+            <p class="text-2xl font-bold text-gray-900">
+              <% if @training_plans.any? %>
+                <%= @training_plans.first.current_handicap %> → <%= @training_plans.first.target_handicap %>
+              <% else %>
+                --
+              <% end %>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow p-6">
+        <div class="flex items-center">
+          <div class="bg-purple-100 rounded-full p-3 mr-4">
+            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm text-gray-600">Member Since</p>
+            <p class="text-lg font-bold text-gray-900"><%= @user.created_at.strftime("%b %Y") %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Training Plans -->
+    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+      <div class="px-8 py-6 border-b border-gray-200">
+        <h2 class="text-xl font-bold text-gray-900">Recent Training Plans</h2>
+      </div>
+
+      <% if @training_plans.any? %>
+        <div class="divide-y divide-gray-200">
+          <% @training_plans.limit(5).each do |plan| %>
+            <div class="px-8 py-6 hover:bg-gray-50 transition-colors">
+              <div class="flex items-center justify-between">
+                <div class="flex-1">
+                  <div class="flex items-center space-x-4 mb-2">
+                    <span class="text-lg font-semibold text-gray-900">
+                      <%= plan.current_handicap %> → <%= plan.target_handicap %>
+                    </span>
+                    <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">
+                      <%= plan.timeline_months %> months
+                    </span>
+                  </div>
+                  <p class="text-sm text-gray-600">
+                    Goal: Improve by <%= (plan.current_handicap - plan.target_handicap).round(1) %> strokes
+                  </p>
+                  <p class="text-xs text-gray-500 mt-1">
+                    Created <%= time_ago_in_words(plan.created_at) %> ago
+                  </p>
+                </div>
+                <div>
+                  <%= link_to "View Plan", training_plan_path(plan), class: "bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 font-medium text-sm" %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <% if @training_plans.count > 5 %>
+          <div class="px-8 py-4 bg-gray-50 text-center">
+            <%= link_to "View All Training Plans", training_plans_path, class: "text-green-600 hover:text-green-700 font-medium" %>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="px-8 py-12 text-center">
+          <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+          </svg>
+          <h3 class="text-lg font-medium text-gray-900 mb-2">No Training Plans Yet</h3>
+          <p class="text-gray-600 mb-4">Create your first training plan to get started on your golf improvement journey.</p>
+          <%= link_to "Create Training Plan", new_training_plan_path, class: "inline-block bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 font-medium" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -29,17 +29,17 @@
         <div class="flex justify-between h-16">
           <div class="flex">
             <div class="flex-shrink-0 flex items-center">
-              <%= link_to "Golf Coach", root_path, class: "text-2xl font-bold text-green-600" %>
+              <%= link_to "Golf Coach", root_path, class: "text-xl font-bold text-green-600" %>
             </div>
           </div>
           <div class="flex items-center space-x-4">
             <% if logged_in? %>
-              <%= link_to "Dashboard", user_path(current_user), class: "text-gray-700 hover:text-green-600" %>
-              <%= link_to "Training Plans", training_plans_path, class: "text-gray-700 hover:text-green-600" %>
-              <%= button_to "Logout", logout_path, method: :delete, class: "text-gray-700 hover:text-green-600" %>
+              <%= link_to "Dashboard", user_path(current_user), class: "text-sm text-gray-700 hover:text-green-600" %>
+              <%= link_to "Training Plans", training_plans_path, class: "text-sm text-gray-700 hover:text-green-600" %>
+              <%= button_to "Logout", logout_path, method: :delete, class: "text-sm text-gray-700 hover:text-green-600", form: { class: "inline" } %>
             <% else %>
-              <%= link_to "Login", login_path, class: "text-gray-700 hover:text-green-600" %>
-              <%= link_to "Sign Up", signup_path, class: "bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700" %>
+              <%= link_to "Login", login_path, class: "text-sm text-gray-700 hover:text-green-600" %>
+              <%= link_to "Sign Up", signup_path, class: "text-sm bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700" %>
             <% end %>
           </div>
         </div>

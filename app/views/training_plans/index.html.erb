@@ -1,4 +1,90 @@
-<div>
-  <h1 class="font-bold text-4xl">TrainingPlans#index</h1>
-  <p>Find me in app/views/training_plans/index.html.erb</p>
+<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900 mb-2">My Training Plans</h1>
+          <p class="text-gray-600">View and manage all your personalized training plans</p>
+        </div>
+        <div>
+          <%= link_to "Create New Plan", new_training_plan_path, class: "bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 font-semibold" %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Training Plans Grid -->
+    <% if @training_plans.any? %>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <% @training_plans.each do |plan| %>
+          <div class="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow overflow-hidden">
+            <!-- Plan Header -->
+            <div class="bg-gradient-to-r from-green-500 to-green-600 p-6 text-white">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm font-medium opacity-90">Training Plan</span>
+                <span class="bg-white bg-opacity-20 text-xs font-medium px-2.5 py-1 rounded">
+                  <%= plan.timeline_months %>mo
+                </span>
+              </div>
+              <div class="flex items-center justify-center space-x-3 text-2xl font-bold">
+                <span><%= plan.current_handicap %></span>
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                </svg>
+                <span><%= plan.target_handicap %></span>
+              </div>
+            </div>
+
+            <!-- Plan Details -->
+            <div class="p-6">
+              <div class="space-y-3 mb-6">
+                <div class="flex items-center text-sm">
+                  <svg class="w-5 h-5 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                  </svg>
+                  <span class="text-gray-700">Improve by <span class="font-semibold text-green-600"><%= (plan.current_handicap - plan.target_handicap).round(1) %> strokes</span></span>
+                </div>
+                <div class="flex items-center text-sm">
+                  <svg class="w-5 h-5 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                  <span class="text-gray-600">Created <%= time_ago_in_words(plan.created_at) %> ago</span>
+                </div>
+              </div>
+
+              <!-- Guides Available -->
+              <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                <p class="text-xs font-medium text-gray-600 mb-2">Includes 3 Training Guides:</p>
+                <div class="flex flex-wrap gap-2">
+                  <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">Quick Start</span>
+                  <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">Complete Plan</span>
+                  <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">Advanced Plan</span>
+                </div>
+              </div>
+
+              <!-- Action Button -->
+              <%= link_to "View Plan", training_plan_path(plan), class: "block w-full text-center bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 font-medium transition-colors" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <!-- Empty State -->
+      <div class="bg-white rounded-lg shadow-lg p-12 text-center">
+        <svg class="w-20 h-20 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+        <h3 class="text-2xl font-bold text-gray-900 mb-2">No Training Plans Yet</h3>
+        <p class="text-gray-600 mb-6 max-w-md mx-auto">
+          Get started on your golf improvement journey by creating your first personalized training plan.
+        </p>
+        <%= link_to "Create Your First Plan", new_training_plan_path, class: "inline-block bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700 font-semibold" %>
+      </div>
+    <% end %>
+
+    <!-- Back to Dashboard -->
+    <div class="mt-8 text-center">
+      <%= link_to "← Back to Dashboard", user_path(current_user), class: "text-gray-600 hover:text-gray-900" %>
+    </div>
+  </div>
 </div>
