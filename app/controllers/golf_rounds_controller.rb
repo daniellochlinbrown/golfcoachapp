@@ -8,10 +8,13 @@ class GolfRoundsController < ApplicationController
 
   # POST /golf_rounds
   def create
-    rounds_params = params[:rounds] || []
+    rounds_params = params[:rounds] || {}
+
+    # Convert hash to array of values
+    rounds_array = rounds_params.values
 
     # Validate we have 3 rounds
-    if rounds_params.length != 3
+    if rounds_array.length != 3
       flash.now[:alert] = "Please enter exactly 3 rounds of golf."
       render :new, status: :unprocessable_entity
       return
@@ -21,7 +24,7 @@ class GolfRoundsController < ApplicationController
     @golf_rounds = []
     errors = []
 
-    rounds_params.each_with_index do |round_data, index|
+    rounds_array.each_with_index do |round_data, index|
       round = GolfRound.new(
         user: current_user,
         course_name: round_data[:course_name],
