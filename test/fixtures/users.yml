@@ -4,8 +4,12 @@ one:
   email: user1@example.com
   password_digest: <%= BCrypt::Password.create('password123', cost: 4) %>
   has_official_handicap: false
+  confirmed_at: <%= 1.day.ago %>
+  confirmation_token: null
 
 two:
   email: user2@example.com
   password_digest: <%= BCrypt::Password.create('password123', cost: 4) %>
   has_official_handicap: true
+  confirmed_at: <%= 1.day.ago %>
+  confirmation_token: null
