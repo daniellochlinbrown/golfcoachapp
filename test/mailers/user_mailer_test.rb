@@ -9,7 +9,7 @@ class UserMailerTest < ActionMailer::TestCase
 
     assert_equal "Confirm your Golf Coach App account", mail.subject
     assert_equal [ user.email ], mail.to
-    assert_equal [ "noreply@golfcoachapp.com" ], mail.from
+    assert_equal [ "daniel.brown27@hotmail.com" ], mail.from
     assert_match "Welcome to Golf Coach App", mail.body.encoded
     assert_match "Confirm My Email", mail.body.encoded
     assert_match user.confirmation_token, mail.body.encoded
