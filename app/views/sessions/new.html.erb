@@ -36,6 +36,12 @@
         <span class="text-gray-600">Don't have an account?</span>
         <%= link_to "Sign up", signup_path, class: "font-medium text-green-600 hover:text-green-500" %>
       </div>
+
+      <% if @resend_confirmation_link %>
+        <div class="text-center text-sm mt-4">
+          <%= link_to "Resend confirmation email", @resend_confirmation_link, class: "font-medium text-blue-600 hover:text-blue-500" %>
+        </div>
+      <% end %>
     <% end %>
   </div>
 </div>

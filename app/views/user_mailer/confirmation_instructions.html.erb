@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .header {
+        background-color: #16a34a;
+        color: white;
+        padding: 30px 20px;
+        text-align: center;
+        border-radius: 8px 8px 0 0;
+      }
+      .content {
+        background-color: #ffffff;
+        padding: 30px 20px;
+        border: 1px solid #e5e7eb;
+        border-top: none;
+      }
+      .button {
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: #16a34a;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        margin: 20px 0;
+        font-weight: 600;
+      }
+      .footer {
+        text-align: center;
+        color: #6b7280;
+        font-size: 14px;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #e5e7eb;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1 style="margin: 0; font-size: 28px;">Golf Coach App</h1>
+    </div>
+
+    <div class="content">
+      <h2 style="color: #16a34a; margin-top: 0;">Welcome to Golf Coach App!</h2>
+
+      <p>Hi <%= @user.email %>,</p>
+
+      <p>Thanks for signing up! We're excited to help you improve your golf game with AI-powered training plans and handicap tracking.</p>
+
+      <p>To get started, please confirm your email address by clicking the button below:</p>
+
+      <div style="text-align: center;">
+        <%= link_to "Confirm My Email", @confirmation_url, class: "button", style: "background-color: #16a34a; color: white; text-decoration: none; padding: 12px 24px; border-radius: 6px; display: inline-block; font-weight: 600;" %>
+      </div>
+
+      <p style="color: #6b7280; font-size: 14px;">
+        If the button doesn't work, copy and paste this link into your browser:<br/>
+        <a href="<%= @confirmation_url %>" style="color: #16a34a;"><%= @confirmation_url %></a>
+      </p>
+
+      <p style="margin-top: 30px;">
+        <strong>What you can do with Golf Coach App:</strong>
+      </p>
+      <ul>
+        <li>Calculate your handicap using the World Handicap System</li>
+        <li>Get personalized AI-powered training plans</li>
+        <li>Track your progress over time</li>
+        <li>Access three-tier training guides (Quick Start, Complete, Advanced)</li>
+      </ul>
+
+      <p>This confirmation link will expire in 24 hours for security reasons.</p>
+
+      <p>If you didn't create an account with Golf Coach App, you can safely ignore this email.</p>
+
+      <p style="margin-top: 30px;">
+        Best regards,<br/>
+        The Golf Coach App Team
+      </p>
+    </div>
+
+    <div class="footer">
+      <p>This is an automated message, please do not reply to this email.</p>
+    </div>
+  </body>
+</html>

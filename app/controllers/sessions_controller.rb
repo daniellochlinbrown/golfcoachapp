@@ -8,9 +8,15 @@ class SessionsController < ApplicationController
     user = User.find_by(email: params[:email].downcase)
 
     if user&.authenticate(params[:password])
-      log_in(user)
-      flash[:notice] = "Welcome back, #{user.email}!"
-      redirect_to root_path
+      if user.confirmed?
+        log_in(user)
+        flash[:notice] = "Welcome back, #{user.email}!"
+        redirect_to root_path
+      else
+        flash.now[:alert] = "Please confirm your email address before logging in. Check your inbox or request a new confirmation email."
+        @resend_confirmation_link = new_confirmation_path
+        render :new, status: :unprocessable_entity
+      end
     else
       flash.now[:alert] = "Invalid email or password"
       render :new, status: :unprocessable_entity

@@ -9,8 +9,8 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      log_in(@user)
-      flash[:notice] = "Welcome to Golf Coach! Your account has been created."
+      @user.send_confirmation_instructions
+      flash[:notice] = "Welcome! Please check your email to confirm your account before logging in."
       redirect_to root_path
     else
       flash.now[:alert] = "There was a problem creating your account."

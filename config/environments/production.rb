@@ -54,24 +54,31 @@ Rails.application.configure do
   # Use async queue adapter (in-process) for single-database deployment
   config.active_job.queue_adapter = :async
 
-  # Ignore bad email addresses and do not raise email delivery errors.
-  # Set this to true and configure the email server for immediate delivery to raise delivery errors.
-  # config.action_mailer.raise_delivery_errors = false
+  # Configure ActionMailer for production
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.perform_caching = false
+  config.action_mailer.default_url_options = { host: ENV.fetch("RENDER_EXTERNAL_HOSTNAME", "example.com"), protocol: "https" }
 
-  # Set host to be used by links generated in mailer templates.
-  # Render provides a default URL: yourappname.onrender.com
-  # TODO: Update this after deployment with your actual Render URL
-  # Example: golfcoachapp.onrender.com or your custom domain
-  config.action_mailer.default_url_options = { host: ENV.fetch("RENDER_EXTERNAL_HOSTNAME", "example.com") }
-
-  # Specify outgoing SMTP server. Remember to add smtp/* credentials via bin/rails credentials:edit.
-  # config.action_mailer.smtp_settings = {
-  #   user_name: Rails.application.credentials.dig(:smtp, :user_name),
-  #   password: Rails.application.credentials.dig(:smtp, :password),
-  #   address: "smtp.example.com",
-  #   port: 587,
-  #   authentication: :plain
-  # }
+  # SMTP configuration using environment variables
+  # Works with SendGrid, Postmark, Mailgun, AWS SES, etc.
+  # Set these environment variables in Render dashboard:
+  # - SMTP_ADDRESS (e.g., smtp.sendgrid.net)
+  # - SMTP_PORT (e.g., 587)
+  # - SMTP_USERNAME (your SMTP username)
+  # - SMTP_PASSWORD (your SMTP password)
+  # - SMTP_DOMAIN (optional, your domain)
+  if ENV["SMTP_ADDRESS"].present?
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.smtp_settings = {
+      address: ENV.fetch("SMTP_ADDRESS"),
+      port: ENV.fetch("SMTP_PORT", 587),
+      user_name: ENV.fetch("SMTP_USERNAME"),
+      password: ENV.fetch("SMTP_PASSWORD"),
+      domain: ENV.fetch("SMTP_DOMAIN", "golfcoachapp.com"),
+      authentication: :plain,
+      enable_starttls_auto: true
+    }
+  end
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).

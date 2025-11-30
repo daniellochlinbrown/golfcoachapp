@@ -19,6 +19,10 @@ Rails.application.routes.draw do
   post   "/login",   to: "sessions#create"
   delete "/logout",  to: "sessions#destroy"
 
+  # Email confirmation routes
+  resources :confirmations, only: [ :new, :create ]
+  get    "/confirmations/:token", to: "confirmations#show", as: :confirmation
+
   # User resources
   resources :users, only: [ :show ]
 

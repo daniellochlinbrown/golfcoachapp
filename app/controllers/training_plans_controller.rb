@@ -26,7 +26,7 @@ class TrainingPlansController < ApplicationController
         @training_plan.complex_guide = guides[:complex]
 
         if @training_plan.save
-          flash[:notice] = "Your training plan has been generated!"
+          flash[:notice] = "Success! Your personalized training plan is ready."
           redirect_to training_plan_path(@training_plan)
         else
           flash.now[:alert] = "There was a problem saving your training plan."
